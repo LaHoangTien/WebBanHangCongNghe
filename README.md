@@ -1,85 +1,27 @@
 # 🛍️ WebBanHangCongNghe - Nền Tảng Bán Hàng Công Nghệ Trực Tuyến
 
-Dự án cá nhân xây dựng nền tảng thương mại điện tử hoàn chỉnh (Full-Stack), cung cấp trải nghiệm mua sắm công nghệ đồng bộ trên cả nền tảng Web và Ứng dụng di động.
+Dự án xây dựng nền tảng thương mại điện tử, cung cấp trải nghiệm mua sắm thuận tiện và thông minh.
+
 
 ---
 
-## 📁 Cấu trúc dự án (Monorepo)
+## ✨ Các tính năng cốt lõi
 
-Dự án được tổ chức theo mô hình **Monorepo** giúp dễ dàng quản lý toàn bộ mã nguồn của hệ thống trong một kho lưu trữ duy nhất:
-
-* **`backend/`**: Mã nguồn Backend (Java Spring Boot) xử lý toàn bộ logic nghiệp vụ, cơ sở dữ liệu, API, xác thực và quản lý đơn hàng.
-* **`frontend/`**: Giao diện Web Front-End (HTML/CSS/JavaScript hoặc Framework hiện đại) cung cấp trải nghiệm người dùng tối ưu.
-* **`mobile/`**: Mã nguồn ứng dụng di động (Android/iOS Client) giao tiếp với Backend qua RESTful API để phục vụ người dùng mua sắm trên điện thoại.
-
----
-
-## ✨ Các tính năng cốt lõi & Trải nghiệm đa nền tảng
-
-### 1. Phân hệ Web (Web Platform)
 * **Trải nghiệm người dùng:** Giao diện Web được thiết kế tối ưu, cho phép người dùng cuối duyệt sản phẩm công nghệ, xem thông tin chi tiết, đánh giá và thực hiện mua hàng một cách nhanh chóng.
 * **Giỏ hàng & Thanh toán:** Hệ thống giỏ hàng thông minh với tính năng lưu sản phẩm yêu thích, tính toán tự động và tích hợp nhiều phương thức thanh toán.
 * **Trang quản trị (Admin Dashboard):** Không gian quản lý riêng biệt dành cho Admin để kiểm soát toàn bộ hệ thống (Thêm/Sửa/Xóa sản phẩm, quản lý danh mục, theo dõi đơn hàng).
-
-### 2. Phân hệ Di động (Mobile App)
-* Cung cấp ứng dụng native mượt mà dành cho hệ điều hành Android/iOS, đồng bộ dữ liệu thời gian thực với hệ thống Web thông qua các RESTful API.
-* Hỗ trợ đầy đủ các tính năng mua sắm, tìm kiếm nâng cao, quản lý đơn hàng, và theo dõi vận chuyển như trên môi trường Web.
-
-### 3. Các tính năng hệ thống cốt lõi
-* **Xác thực bảo mật:** Đăng ký, đăng nhập hệ thống, khôi phục mật khẩu qua Email OTP, và đăng nhập nhanh bằng tài khoản Google/Facebook.
+* **Xác thực bảo mật:** Đăng ký, đăng nhập hệ thống.
 * **Quản lý sản phẩm:** Hệ thống quản lý kho hàng tối ưu, theo dõi tồn kho, cập nhật giá cả, và phân loại sản phẩm công nghệ đa dạng.
-* **Tìm kiếm thông minh:** Tích hợp Elasticsearch giúp tìm kiếm tên sản phẩm, danh mục, thương hiệu ngay lập tức với cơ chế tìm kiếm mờ (Fuzzy Search).
-* **Quản lý đơn hàng:** Theo dõi đầy đủ quy trình từ đặt hàng, xác nhận, vận chuyển cho đến giao hàng với thông báo tự động.
-* **Hệ thống đánh giá & bình luận:** Người dùng có thể để lại đánh giá sản phẩm, hình ảnh, và bình luận để giúp cộng đồng ra quyết định mua hàng.
-* **Đề xuất sản phẩm:** Sử dụng AI/Machine Learning để đề xuất sản phẩm phù hợp dựa trên lịch sử xem và mua hàng của người dùng.
-
----
+* **Quản lý đơn hàng:** Theo dõi đầy đủ quy trình từ đặt hàng, xác nhận, vận chuyển cho đến giao hàng.
+* **Hệ thống đánh giá & bình luận:** Người dùng có thể để lại đánh giá sản phẩm và bình luận để giúp cộng đồng ra quyết định mua hàng.
 
 ## 🛠️ Công nghệ sử dụng
 
 ### Backend
-* **Java Spring Boot** - Framework web chính
-* **Spring Data JPA** - Truy cập cơ sở dữ liệu
-* **PostgreSQL/MySQL** - Cơ sở dữ liệu
-* **Elasticsearch** - Tìm kiếm toàn văn bản
-* **JWT/OAuth2** - Xác thực bảo mật
+* **C# ASP.NET Core** 
+* **Entity Framework Core (EF Core)**
+* **SQL Server**
+* **ASP.NET Core Identity + JWT**
 
 ### Frontend
-* **HTML5/CSS3/JavaScript** - Công nghệ cơ bản
-* **React/Vue.js/Angular** - Framework Frontend (nếu sử dụng)
-* **Responsive Design** - Tối ưu hóa trên các thiết bị
-
-### Mobile
-* **Android/Kotlin** - Phát triển ứng dụng Android
-* **RESTful API** - Giao tiếp với Backend
-
----
-
-## 🚀 Hướng dẫn cài đặt & Chạy dự án
-
-### Yêu cầu hệ thống
-* Java 11+ 
-* Node.js 14+ (nếu sử dụng Frontend Framework)
-* PostgreSQL/MySQL
-* Docker (tùy chọn)
-
-### Bước cài đặt
-1. Clone repository: `git clone https://github.com/LaHoangTien/WebBanHangCongNghe.git`
-2. Điều hướng vào thư mục dự án: `cd WebBanHangCongNghe`
-3. Cài đặt dependencies cho Backend, Frontend, Mobile theo từng thư mục con
-4. Cấu hình biến môi trường (`.env`, `application.properties`)
-5. Chạy Backend, Frontend, và Mobile application
-
----
-
-## 📝 Giấy phép
-
-Dự án này được phát hành dưới giấy phép MIT.
-
-## 👤 Tác giả
-
-**LaHoangTien** - [GitHub Profile](https://github.com/LaHoangTien)
-
----
-
-**Cảm ơn bạn đã quan tâm đến dự án này!** ⭐
+* **HTML5/CSS3/JavaScript** 
