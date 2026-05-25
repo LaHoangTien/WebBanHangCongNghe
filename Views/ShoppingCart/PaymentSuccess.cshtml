@@ -1,0 +1,25 @@
+﻿@{
+	ViewData["Title"] = "Payment Success";
+}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+
+            <div>
+                <div class="col-sm-12 empty-cart-cls text-center">
+                    <img src="https://cdn4.iconfinder.com/data/icons/business-analysis-vol-1-2/317/accept-512.png" width="300" height="300" class="img-fluid mb-4 mr-3">
+                    <h3 style="color:#fb9372"><strong>Thanh toán thành công !</strong></h3>
+                    <h4 style="color:#fb9372">@TempData["Message"]</h4>
+                    <div style="height: 200px">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Trở về trang chủ</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

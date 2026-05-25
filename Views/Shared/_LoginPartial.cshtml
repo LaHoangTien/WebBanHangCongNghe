@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+ @using WebBanHang.Utilitys
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="@UserManager.GetUserName(User)!"><i class="fa fa-user"></i> Account</a>
+    </li>
+    <li>
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button id="logout" type="submit" class="nav-link btn text-dark border-0"><i title="Logout" class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a id="register" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-file-earmark-text"></i> Đăng Ký</a>
+    </li>
+    <li>
+        <a id="login" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-box-arrow-in-left"></i> Đăng Nhập</a>
+    </li>
+}

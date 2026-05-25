@@ -1,0 +1,23 @@
+﻿@model WebBanHang.Areas.Admin.Models.EditUserRoleViewModel
+
+@{
+    ViewData["Title"] = "Edit User Role";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-3">Edit User Role</h1>
+
+    <h4>User: @Model.UserName</h4>
+
+    <form asp-action="EditUserRole" method="post">
+        <input type="hidden" asp-for="UserId" />
+        <div class="form-group">
+            <label asp-for="SelectedRoles">Roles</label>
+            <select asp-for="SelectedRoles" asp-items="new MultiSelectList(Model.AllRoles)" multiple="multiple" class="form-control"></select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <a asp-action="Index" class="btn btn-secondary mt-2">Back to List</a>
+</div>

@@ -1,0 +1,350 @@
+﻿@page
+@model RegisterModel
+
+
+
+@* 
+<div class="card shadow border-0 mt-4"
+    <div class="card-header bg-secondary bg-gradient ms-lg-0 py-4"
+        <div class=" row">
+            <div class="col-12 text-center">
+                <h1 class="py-2 text-black">  Đăng ký  </h1>
+            </div>
+        </div>
+    </div>
+ </div>
+
+<div class="row pt-4">
+    <div class="col-md-12">
+        <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2 class="text-center">Tạo tài khoản mới</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username"  aria-required="true" />
+                <label asp-for="Input.Email" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+              <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="name@example.com"/>
+                <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">Phone Number </label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.FullName" class="form-control"  placeholder="name@example.com"/>
+                <label asp-for="Input.FullName" class="ms-2 text-muted">Full Name </label>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Input.Password" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+              <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Address" class="form-control" placeholder="name@example.com" aria-required="true" />
+                <label asp-for="Input.Address" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+             <div class="form-floating mb-3 col-md-6">
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                <option disabled selected>-Select Role- </option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Đăng Ký</button>
+            </div>
+
+        </form>
+    </div>
+</div> *@
+
+<body>
+    <section class="containerlogin forms">
+ 
+        <!-- Signup Form -->
+
+        <div class="form signup">
+            <div class="form-content">
+                <header>Signup</header>
+                <form id="registerForm" class="row"  asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="field input-field">
+                        <input asp-for="Input.Email" autocomplete="username" aria-required="true" type="email" placeholder="Email" class="input">
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="field input-field">
+                        <input asp-for="Input.PhoneNumber" placeholder="PhoneNumber" class="input">
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                  
+                    <div class="field input-field">
+                        <input asp-for="Input.FullName"  placeholder="FullName" class="input">
+                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="field input-field">
+                        <input asp-for="Input.Address"  placeholder="Address" class="input">
+                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                    </div>
+                    <div class="field input-field">
+                        <input asp-for="Input.Password" placeholder="Create password" class="password" aria-required="true">
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="field input-field">
+                        <input asp-for="Input.ConfirmPassword" placeholder="Confirm password" class="password" aria-required="true">
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        <i class='bx bx-hide eye-icon'></i>
+                    </div>
+
+                    <div class="field button-field">
+                        <button id="registerSubmit" type="submit" >Signup</button>
+                    </div>
+                </form>
+
+                <div class="form-link">
+                    <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
+                </div>
+            </div>
+
+            <div class="line"></div>
+
+            <div class="media-options">
+                <a href="#" class="field facebook">
+                    <i class='bx bxl-facebook facebook-icon'></i>
+                    <span>Login with Facebook</span>
+                </a>
+            </div>
+
+            <div class="media-options">
+                <a href="#" class="field google">
+                    <img src="#" alt="" class="google-img">
+                    <span>Login with Google</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}
+<style>
+/* Google Fonts - Poppins */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.containerlogin {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 30px;
+}
+
+.form {
+    position: absolute;
+    max-width: 430px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 6px;
+    background: #FFF;
+}
+
+
+.forms.show-signup .form.signup {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.forms.show-signup .form.login {
+    opacity: 0;
+    pointer-events: none;
+}
+
+header {
+    font-size: 28px;
+    font-weight: 600;
+    color: #232836;
+    text-align: center;
+}
+
+form {
+    margin-top: 30px;
+}
+
+.form .field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+
+.field input,
+.field button {
+    height: 100%;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 6px;
+}
+
+.field input {
+    outline: none;
+    padding: 0 15px;
+    border: 1px solid#CACACA;
+}
+
+    .field input:focus {
+        border-bottom-width: 2px;
+    }
+
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #8b8b8b;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.field button {
+    color: #fff;
+    background-color: #0171d3;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+    .field button:hover {
+        background-color: #016dcb;
+    }
+
+.form-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+    .form-link span,
+    .form-link a {
+        font-size: 14px;
+        font-weight: 400;
+        color: #232836;
+    }
+
+.form a {
+    color: #0171d3;
+    text-decoration: none;
+}
+
+.form-content a:hover {
+    text-decoration: underline;
+}
+
+.line {
+    position: relative;
+    height: 1px;
+    width: 100%;
+    margin: 36px 0;
+    background-color: #d4d4d4;
+}
+
+    .line::before {
+        content: 'Or';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #FFF;
+        color: #8b8b8b;
+        padding: 0 15px;
+    }
+
+.media-options a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a.facebook {
+    color: #fff;
+    background-color: #4267b2;
+}
+
+    a.facebook .facebook-icon {
+        height: 28px;
+        width: 28px;
+        color: #0171d3;
+        font-size: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+    }
+
+.facebook-icon,
+img.google-img {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+}
+
+img.google-img {
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+}
+
+a.google {
+    border: 1px solid #CACACA;
+}
+
+    a.google span {
+        font-weight: 500;
+        opacity: 0.6;
+        color: #232836;
+    }
+
+</style>
+<script>
+const forms = document.querySelector(".forms"),
+    pwShowHide = document.querySelectorAll(".eye-icon"),
+    links = document.querySelectorAll(".link");
+
+pwShowHide.forEach(eyeIcon => {
+    eyeIcon.addEventListener("click", () => {
+        let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
+
+        pwFields.forEach(password => {
+            if (password.type === "password") {
+                password.type = "text";
+                eyeIcon.classList.replace("bx-hide", "bx-show");
+                return;
+            }
+            password.type = "password";
+            eyeIcon.classList.replace("bx-show", "bx-hide");
+        })
+
+    })
+})
+
+
+</script>

@@ -1,0 +1,349 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebBanHang.Utilitys
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>WinDowsTechNo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+	<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+	<link href="~/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/css/font-awesome.min.css" rel="stylesheet">
+	<link href="~/css/prettyPhoto.css" rel="stylesheet">
+	<link href="~/css/price-range.css" rel="stylesheet">
+	<link href="~/css/animate.css" rel="stylesheet">
+	<link href="~/css/main.css" rel="stylesheet">
+	<link href="~/css/responsive.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<link rel="shortcut icon" href="images/ico/favicon.ico">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="~/lib/slick/slick.css" />
+	<link rel="stylesheet" type="text/css" href="~/lib/slick/slick-theme.css" />
+
+</head><!--/head-->
+
+<body>
+	
+	<header id="header" >
+		<!--header-->
+		<div class="header_top shadow-lg p-3 mb-5 rounded-5" style=" background-color: #f3f3f3;">
+			<!--header_top-->
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="contactinfo">
+							<ul class="nav nav-pills">
+								<li><a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/imagesweb/windowtechlogo.png" style="max-width: 150px" alt="" /></a></li>
+								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="social-icons pull-right">
+							<ul>
+								@if (User.IsInRole(SD.Role_Admin))
+								{
+									<li>
+										<a class="nav-link text-dark" asp-area="Admin" asp-controller="HomeManager" asp-action="Index"><i class="bi bi-eye"></i> Admin dashboard</a>
+									</li>
+								}
+
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header_top-->
+
+	
+
+		<div class="header-bottom" style="align-content:center">
+			<!--header-bottom-->
+			<div class="container" >
+				<div class="row">
+					<div class="col-sm-5">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+						
+							
+						<div class="mainmenu" >
+							<ul class="nav navbar-nav collapse navbar-collapse " style="text-align:center">
+								<li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door-fill"></i> Home</a></li>
+								<li><a asp-area="" asp-controller="Wishlist" asp-action="Index"><i class="fa fa-heart"></i> Wishlist</a></li>
+								<li> <a asp-area="" asp-controller="ShoppingCart" asp-action="Index"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a asp-action="OrderHistory" asp-controller="User"><i class="bi bi-clock-history"></i> Order</a></li>
+								
+								
+								@* @if (User.IsInRole(SD.Role_Admin))
+								{
+									<li class="dropdown">
+										<a href="#">Shop<i class="fa fa-angle-down"></i></a>
+										<ul role="menu" class="sub-menu">
+											<li class="nav-item">
+												<a class="nav-link text-dark" asp-area="Admin" asp-controller="ProductManager" asp-action="Index">Admin</a>
+											</li>
+										</ul>
+										<div class="collapse d-sm-inline-flex justify-content-end">
+
+											<ul class="navbar-nav flex-grow-1">
+
+											</ul>
+											<ul class="navbar-nav flex-grow-1">
+												
+											</ul>
+
+											
+										</div>
+									</li>
+								}
+								<li class="dropdown">
+									<a href="#">Blog<i class="fa fa-angle-down"></i></a>
+									<ul role="menu" class="sub-menu">
+										<li><a href="blog.html">Blog List</a></li>
+										<li><a href="blog-single.html">Blog Single</a></li>
+									</ul>
+								</li>
+								<li><a href="404.html">404</a></li>
+								<li><a href="contact-us.html">Contact</a></li> *@
+							
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="search_box">
+							<form asp-action="Search" asp-controller="Home" method="get" class="form-inline my-2 my-lg-0">
+								<input class="form-control mr-sm-2" style="width:250px;background-image: url(../images/home/searchicon.png);background-repeat: no-repeat;background-position: 225px;" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search" aria-label="Search">
+							</form>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="mainmenu">
+							<ul class="nav navbar-nav collapse navbar-collapse " style="text-align:center">
+								@if (SignInManager.IsSignedIn(User))
+								{
+									<li>
+										<a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="@UserManager.GetUserName(User)!"><i class="fa fa-user"></i> Account</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);"id="logoutLink">
+											<i title="Logout" class="bi bi-box-arrow-right"></i> Đăng xuất
+										</a>
+
+										<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" style="display:none;">
+											@Html.AntiForgeryToken()
+										</form>
+
+										<script>
+											document.getElementById('logoutLink').addEventListener('click', function (event) {
+												event.preventDefault();
+												document.getElementById('logoutForm').submit();
+											});
+										</script>
+
+									</li>
+								}
+								else
+								{
+									<li>
+										<a id="register" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-file-earmark-text"></i> Đăng Ký</a>
+									</li>
+									<li>
+										<a id="login" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-box-arrow-in-left"></i> Đăng Nhập</a>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header-bottom-->
+	</header><!--/header-->
+	<section class="border-top border-5 rounded-5" style=" background-color: #f3f3f3;">
+		<div class="container">
+				@RenderBody()
+		</div>
+	</section>
+
+	<footer id="footer">
+		<!--Footer-->
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="companyinfo">
+							<img src="~/imagesweb/win.png" style="max-width: 200px" alt="" />
+							
+						</div>
+					</div>
+					<div class="col-sm-7">
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="~/imagesweb/samsung.jpg" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="~/imagesweb/Apple.jpg" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="~/imagesweb/Xiaomi.jpg" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="~/imagesweb/Tech.jpg" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="address">
+							<img src="~/images/home/map.png" alt="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer-widget">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="single-widget">
+							<h2>Service</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">Online Help</a></li>
+								<li><a href="#">Contact Us</a></li>
+								<li><a href="#">Order Status</a></li>
+								<li><a href="#">Change Location</a></li>
+								<li><a href="#">FAQ’s</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="single-widget">
+							<h2>Policies</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">Terms of Use</a></li>
+								<li><a href="#">Privecy Policy</a></li>
+								<li><a href="#">Refund Policy</a></li>
+								<li><a href="#">Billing System</a></li>
+								<li><a href="#">Ticket System</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="single-widget">
+							<h2>About Shopper</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">Company Information</a></li>
+								<li><a href="#">Careers</a></li>
+								<li><a href="#">Store Location</a></li>
+								<li><a href="#">Affillate Program</a></li>
+								<li><a href="#">Copyright</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="single-widget">
+							<h2>About Shopper</h2>
+							<form action="#" class="searchform">
+								<input type="text" placeholder="Your email address" />
+								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+								<p>Get the most recent updates from <br />our site and be updated your self...</p>
+							</form>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<div class="container">
+				<div class="row">
+					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
+					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+				</div>
+			</div>
+		</div>
+
+	</footer><!--/Footer-->
+
+
+	
+	<script src="~/js/jquery.js"></script>
+	<script src="~/js/bootstrap.min.js"></script>
+	<script src="~/js/jquery.scrollUp.min.js"></script>
+	<script src="~/js/price-range.js"></script>
+	<script src="~/js/jquery.prettyPhoto.js"></script>
+	<script src="~/js/main.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

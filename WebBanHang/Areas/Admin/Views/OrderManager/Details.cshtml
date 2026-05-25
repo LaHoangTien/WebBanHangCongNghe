@@ -1,0 +1,53 @@
+﻿@model Order
+
+<section id="cart_items">
+    <div class="container">
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+
+                <h2 style="text-align:center;">Chi tiết đơn hàng</h2>
+
+
+                <p>Mã đơn: @Model.Id</p>
+                <p>Tên người nhận: @Model.Name</p>
+                <p>Số điện thoại: @Model.PhoneNumber</p>
+                <p>Địa chỉ: @Model.ShippingAddress</p>
+                <p>Ngày đặt hàng: @Model.OrderDate</p>
+
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="id">Mã sản phẩm</td>
+                        <td class="image">Sản phẩm</td>
+                        <td class="description">Tên sản phẩm</td>
+                        <td class="price">Giá</td>
+                        <td class="quantity">Số lượng</td>
+                        <td>Thành Tiền</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>@item.ProductId</td>
+                            <td>
+                                <a href=""><img src=@item.ProductImges alt="" style="max-width: 100px;"></a>
+                            </td>
+                            <td class="cart_description">
+                                <p>@item.ProductName</p>
+                            </td>
+                            <td class="cart_price">
+                                <p>$@item.Price.ToString("#,##đ")</p>
+                            </td>
+                            <td class="cart_quantity">@item.Quantity</td>
+                            <td class="cart_price">
+                                <p>@item.Price1.ToString("#,##đ")</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+            <h3>Tổng Hóa Đơn: @Model.OrderDetails.Sum(d => d.Quantity * d.Price).ToString("#,##đ")</h3>
+        </div>
+    </div>
+</section> <!--/#cart_items-->

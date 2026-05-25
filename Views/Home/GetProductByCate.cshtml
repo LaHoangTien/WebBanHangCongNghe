@@ -1,0 +1,223 @@
+﻿@using System.Collections;
+@{
+    ViewData["Title"] = "GetProductById";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+	Pager pager = new Pager();
+	int pageNo = 0;
+	if (ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.Currentpage;
+	}
+}
+@model IEnumerable<WebBanHang.Models.Product>
+<section id="slider">
+	<!--slider-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-2">
+				@await Component.InvokeAsync("Navbar")
+				@await Component.InvokeAsync("NavbarBrand")
+
+			</div>
+
+			<div class="col-sm-10">
+
+				<div id="slider-carousel" class="carousel slide" data-ride="carousel">
+
+					<div class="carousel-inner">
+						<div class="item active">
+							<div class="col-sm-6">
+								<h1><span>WinDow</span>-Tech</h1>
+								<h2>100% Legit</h2>
+							</div>
+							<div class="col-sm-6">
+								<img class="img-fluid rounded-4 hover-shadow" src="~/imagesweb/baner2.jpg" class="girl img-responsive" alt="" style="height:350px" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="col-sm-12" style="align-content: center">
+								<img class="img-fluid rounded-4 hover-shadow" src="~/imagesweb/baner1.png" class="girl img-responsive" alt="" style="height:350px" />
+							</div>
+						</div>
+					</div>
+
+					<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+						<i class="fa fa-angle-left"></i>
+					</a>
+					<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section><!--/slider-->
+<div class="row">
+	<div class="container">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="bi bi-funnel"></i>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a asp-action="GetProductByCate" asp-controller="Home" asp-route-sortOrder="price_desc">0-10m</a></li>
+				<li><a asp-action="GetProductByCate" asp-controller="Home" asp-route-sortOrder="price_asc">10-20m</a></li>
+				<li><a asp-action="GetProductByCate" asp-controller="Home" asp-route-sortOrder="price_dasc">20-30m</a></li>
+				<li><a asp-action="GetProductByCate" asp-controller="Home" asp-route-sortOrder="price_esc">30-50m</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a asp-action="GetProductByCate" asp-controller="Home">Reset</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<div class="features_items">
+			<!--features_items-->
+			<h2 class="title text-center">Features Items</h2>
+			@foreach (var item in Model)
+			{
+				<div class="col-sm-3">
+
+					<div class="product-image-wrapper shadow-lg p-3 mb-5 rounded-5" style="background-color:#ffffff;">
+						<a asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id" class="">
+
+							<div class="single-products">
+								<div class="productinfo floating ">
+									<img src="@item.ImageUrl" />
+								</div>
+
+							</div>
+							<div class="productinfo1 text-center">
+
+								<h2>@item.Price.ToString("#,##đ")</h2>
+								<p>@item.Name</p>
+
+							</div>
+							<ul class="row justify-content-center">
+								<li style="text-align: center;  " class="col-2 justify-content-center "><a id="toggleWishlist" data-product-id="@item.Id" class="wishlist-button"><i class="fa fa-heart" style="font-size: 30px"></i></a></li>
+								<li class="col-10" style="text-align: center; font-size: 20px"><a class="justify-content-end " style="color:#fb9372; align-content:center" asp-route-productId="@item.Id" asp-controller="ShoppingCart" asp-action="PlusCart" value="1"><i class="fa fa-shopping-cart"></i> Add to Cart</a></li>
+							</ul>
+						</a>
+
+
+
+
+					</div>
+				</div>
+			}
+		</div><!--features_items-->
+	</div>
+</div>
+<section class="pager">
+	<div class="container">
+		@if (pager.TotalPages > 0)
+		{
+			<ul class="pagination justify-content-center">
+				@* First and Previous Buttons *@
+				<li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+					<a class="page-link" asp-controller="Home" asp-action="GetProductByCate" asp-route-pg="1" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">First</a>
+				</li>
+				<li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+					<a class="page-link" asp-controller="Home" asp-action="GetProductByCate" asp-route-pg="@(pager.Currentpage > 1 ? pager.Currentpage - 1 : 1)" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">Previous</a>
+				</li>
+
+				@* Page Numbers *@
+				@for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+				{
+					@if (pge > 0) // Chỉ hiển thị các số trang dương
+					{
+						<li class="page-item @(pge == pager.Currentpage ? "active" : "")">
+							<a class="page-link" asp-controller="Home" asp-action="GetProductByCate" asp-route-pg="@pge">@pge</a>
+						</li>
+					}
+				}
+
+				@* Next and Last Buttons *@
+				<li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+					<a class="page-link" asp-controller="Home" asp-action="GetProductByCate" asp-route-pg="@(pager.Currentpage < pager.TotalPages ? pager.Currentpage + 1 : pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Next</a>
+				</li>
+				<li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+					<a class="page-link" asp-controller="Home" asp-action="GetProductByCate" asp-route-pg="@(pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Last</a>
+				</li>
+			</ul>
+
+			@* Page Info *@
+			<p class="text-center">
+				Page @pager.Currentpage of @pager.TotalPages
+			</p>
+		}
+	</div>
+</section>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('.wishlist-button').each(function () {
+				var button = $(this);
+				var productId = button.data('product-id');
+
+				// Kiểm tra nếu sản phẩm đã có trong wishlist để thay đổi màu sắc của nút
+				$.get('@Url.Action("IsInWishlist", "Wishlist")', { productId: productId }, function (response) {
+					if (response.inWishlist) {
+						button.find('.fa-heart').addClass('wishlist-added');
+					}
+				});
+
+				button.click(function () {
+					$.ajax({
+						url: '@Url.Action("ToggleWishlist", "Wishlist")',
+						type: 'POST',
+						data: { productId: productId },
+						success: function (response) {
+							if (response.success) {
+								if (response.added) {
+									button.find('.fa-heart').addClass('wishlist-added');
+									button.find('.fa-heart').addClass('animate-heart'); // Thêm lớp hoạt ảnh
+									setTimeout(function () {
+										button.find('.fa-heart').removeClass('animate-heart');
+									}, 1000); // Loại bỏ lớp hoạt ảnh sau 1 giây
+								} else {
+									button.find('.fa-heart').removeClass('wishlist-added');
+									button.find('.fa-heart').addClass('animate-heart'); // Thêm lớp hoạt ảnh
+									setTimeout(function () {
+										button.find('.fa-heart').removeClass('animate-heart');
+									}, 1000); // Loại bỏ lớp hoạt ảnh sau 1 giây
+								}
+							} else {
+								alert('Có lỗi xảy ra khi thay đổi danh sách yêu thích.');
+							}
+						},
+						error: function () {
+							alert('Có lỗi xảy ra khi thay đổi danh sách yêu thích.');
+						}
+					});
+				});
+			});
+		});
+	</script>
+	<style>
+		.wishlist-button {
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+
+			.wishlist-button .fa-heart {
+				font-size: 2rem;
+				color: gray;
+				transition: color 0.3s ease-in-out; /* Thêm hiệu ứng chuyển màu mượt mà */
+			}
+
+				.wishlist-button .fa-heart.wishlist-added {
+					color: red;
+				}
+
+				/* Thêm lớp hoạt ảnh */
+				.wishlist-button .fa-heart.animate-heart {
+					animation: pulse 1s ease-in-out;
+				}
+
+		/* Định nghĩa hoạt ảnh */
+
+	</style>
+}

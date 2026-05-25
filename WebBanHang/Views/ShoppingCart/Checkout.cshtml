@@ -1,0 +1,74 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Billing address</h4>
+
+            <form class="needs-validation" method="post">
+                <div class="mb-3">
+                    <label asp-for="@Model.Name">Họ và Tên</label>
+                    <input type="text" class="form-control" asp-for="@Model.Name" placeholder="Họ và Tên người nhận" required>
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.PhoneNumber">Số điện thoại</label>
+                    <input type="text" class="form-control" asp-for="@Model.PhoneNumber" placeholder="số điện thoại người nhận" required>
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="@Model.ShippingAddress">Địa chỉ nhận hàng</label>
+                    <input type="text" class="form-control" asp-for="@Model.ShippingAddress" placeholder="1234 Main St" required>
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="@Model.Notes">Ghi chú</label>
+                    <textarea type="text" class="form-control" asp-for="@Model.Notes" placeholder="" required onscroll="true" rows="3"></textarea>
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label" for="save-info">Lưu thông tin cho lần mua sau.</label>
+                </div>
+                <hr class="mb-4">
+
+                <h4 class="mb-3">Cách thức thanh toán</h4>
+
+                <div class="d-block my-3">
+
+                    <div class="custom-control custom-radio">
+                        <input id="COD" name="payment" type="radio" class="custom-control-input" value="COD">
+                        <label class="custom-control-label" for="COD">Ship COD</label>
+                        <input id="Thanh toán qua ví VNpay" name="payment" type="radio" class="custom-control-input" value="Thanh toán qua ví VNpay">
+                        <label class="custom-control-label" for="vnpay">VNPay</label>
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            </form>
+        </div>
+    </div>
+</div>

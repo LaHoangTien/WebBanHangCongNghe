@@ -1,0 +1,131 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+     var pager = ViewBag.Pager as Pager;
+}
+<div class="container">
+    <div class="breadcrumbs">
+        <ol class="breadcrumb">
+            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="active">Order</li>
+        </ol>
+    </div>
+</div>
+
+<div class="rounded-5 border border-5 shadow-lg p-3 mb-5 rounded-5">
+@if (Model.Any())
+{
+    
+<section class="intro">
+    <div class="gradient-custom-1 h-100">
+        <div class="mask d-flex align-items-center h-100">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="table-responsive bg-white">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                    <tr>
+                                        <th scope="col">Mã đơn</th>
+                                        <th scope="col">Ngày đặt hàng</th>
+                                        <th scope="col">Tên người nhận</th>
+                                        <th scope="col">Số điện thoại</th>
+                                        <th scope="col">Địa chỉ</th>
+                                        <th scope="col">Tổng hóa đơn</th>
+                                        <th scope="col">Hình thức thanh toán</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td scope="row" style="color: #666666;">@order.Id</td>
+                                            <td>@order.OrderDate.ToShortDateString()</td>
+                                            <td>@order.Name</td>
+                                            <td>@order.PhoneNumber</td>
+                                            <td class="v">@order.ShippingAddress</td>
+                                            <td>@order.TotalPrice.ToString("#,##đ")</td>
+                                            <td>@order.PaymentExpression</td>
+                                            <td><a asp-action="Details" class="btn btn-primary btn-sm" asp-route-id="@order.Id">Details</a></td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    }
+    else
+    {
+        <p>No orders found.</p>
+    }
+</div>
+<section class="pager">
+	<div class="container">
+		@if (pager.TotalPages > 0)
+		{
+			<ul class="pagination justify-content-center">
+				@* First and Previous Buttons *@
+				<li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+					<a class="page-link" asp-controller="User" asp-action="OrderHistory" asp-route-page="1" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">First</a>
+				</li>
+				<li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+					 <a class="page-link" asp-controller="User" asp-action="OrderHistory" asp-route-page="@(pager.Currentpage > 1 ? pager.Currentpage - 1 : 1)" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">Previous</a>
+				</li>
+
+				@* Page Numbers *@
+				@for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+				{
+					@if (pge > 0) // Chỉ hiển thị các số trang dương
+					{
+						<li class="page-item @(pge == pager.Currentpage ? "active" : "")">
+							<a class="page-link" asp-controller="User" asp-action="OrderHistory" asp-route-page="@pge">@pge</a>
+						</li>
+					}
+				}
+
+				@* Next and Last Buttons *@
+				<li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+					  <a class="page-link" asp-controller="User" asp-action="OrderHistory" asp-route-page="@(pager.Currentpage < pager.TotalPages ? pager.Currentpage + 1 : pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Next</a>
+				</li>
+				<li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+					  <a class="page-link" asp-controller="User" asp-action="OrderHistory" asp-route-page="@pager.TotalPages" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Last</a>
+				</li>
+			</ul>
+
+			@* Page Info *@
+			<p class="text-center">
+				Page @pager.Currentpage of @pager.TotalPages
+			</p>
+		}
+	</div>
+</section>
+<style>
+    .v {
+        text-decoration: none;
+        display: inline-block;
+        max-width: 150px; /* Điều chỉnh kích thước nếu cần */
+        white-space: normal; /* Cho phép xuống dòng */
+        word-wrap: break-word; /* Bọc từ nếu quá dài */
+    }
+    table td,
+    table th {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    tbody td {
+        font-weight: 500;
+        color: #999999;
+    }
+</style>

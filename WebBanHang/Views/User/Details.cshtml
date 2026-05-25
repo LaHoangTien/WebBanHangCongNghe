@@ -1,0 +1,145 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="breadcrumbs">
+        <ol class="breadcrumb">
+            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="active"><a asp-action="OrderHistory" asp-controller="User"><i class="bi bi-clock-history"></i> Order</a></li>
+            <li class="active">Order detail</li>
+        </ol>
+    </div>
+</div>
+<section class="h-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-10 col-xl-8">
+        <div class="card" style="border-radius: 10px;">
+          <div class="card-header px-4 py-5">
+            <h5 class="text-muted mb-0">Cảm ơn bạn đã tin tưởng chúng tôi, <span style="color: #a8729a;">@Model.Name</span>!</h5>
+          </div>
+                    <div class="card-body p-4" style="background-color: #fff3e6">
+            @foreach (var item in Model.OrderDetails)
+             {
+                            <div class="card shadow-0 border mb-4 ">
+                                <div class="card-body">
+                                    <div class="row align-items-center" style="height:150px;">
+                                        <div class="col-md-2 text-center">
+                                            <img src=@item.ProductImges style="max-width: 100px;"
+                                                 class="img-fluid" >
+                                        </div>
+                                        <div class="col-md-4 text-center d-flex ">
+                                            <div>
+                                                <p class="small text-muted">Tên sản phẩm</p>
+                                                <p class="lead text-muted text-black mb-0"><a style="color:black" asp-controller="Home" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></p>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2 text-center ">
+                                            <div>
+                                                <p class="small text-muted mb-4 pb-2">Gá</p>
+                                                <p class="text-muted mb-0 small">@item.Price.ToString("#,##đ")</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <div>
+                                                <p class="small text-muted mb-4 pb-2">Số lượng</p>
+                                                <p class="text-muted mb-0 small">@item.Quantity</p>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-md-2 text-center d-flex ">
+                                            <div>
+                                                <p class="small text-muted mb-4 pb-2">Thành tiền</p>
+                                                <p class="text-muted mb-0 small">@item.Price1.ToString("#,##đ")</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                           
+            }
+            <div class="d-flex justify-content-between pt-2">
+              <p class="fw-bold mb-0">Chi tiết đơn hàng</p>
+                           
+            </div>
+            <div class="d-flex justify-content-between pt-2">
+                            <p class="text-muted mb-0">Mã đơn: @Model.Id</p>
+                            
+            </div>
+                        <div class="d-flex justify-content-between ">
+                            <p class="text-muted mb-0">Tên người nhận: @Model.Name</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p class="text-muted mb-0">Số điện thoại: @Model.PhoneNumber</p>
+                        </div>
+            <div class="d-flex justify-content-between">
+                           
+                            <p class="text-muted mb-0">Ngày đặt hàng: @Model.OrderDate</p>
+            </div>
+            <div class="d-flex justify-content-between mb-5">
+                            <p class="text-muted mb-0"> Địa chỉ: @Model.ShippingAddress </p>
+            </div>
+          </div>
+          <div class="card-footer border-0 px-4 py-5"
+                         style="background-color: #fdccbc; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                        <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
+                            Tổng Hóa Đơn:<span class="h2 mb-0 ms-2">@Model.OrderDetails.Sum(d => d.Quantity * d.Price).ToString("#,##đ")</span>
+                        </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+    .lead {
+        text-decoration: none;
+        display: inline-block;
+        max-width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+   
+    .product-card {
+        background-color: #fff3e6;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+
+    .product-card img {
+        max-height: 150px;
+    }
+
+    .product-card p {
+        margin: 0;
+    }
+
+    .product-card a {
+        color: black;
+        text-decoration: none;
+    }
+
+        .product-card a:hover {
+            color: #fb9372;
+        }
+   /*  .gradient-custom {
+        /* fallback for old browsers */
+        background: #cd9cf2;
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
+    } */
+</style>

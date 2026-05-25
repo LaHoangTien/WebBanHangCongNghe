@@ -1,0 +1,594 @@
+﻿@model WebBanHang.ViewModel.ProductDetailsViewModel
+ @using WebBanHang.Utilitys
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+
+	<div class="col-sm-12 padding-right">
+		<div class="product-details">
+			<!--product-details-->
+			<div class="col-sm-6  border border-3 rounded-5" style=" background-color:white;">
+				<div  class="view-product " style="height:350px; background-color:white;" />
+					<img src="@Model.Product.ImageUrl" alt="Product Image" style="width:350px" />
+				@* @if (Model.Product.Images != null && Model.Product.Images.Any())
+				{
+
+					<div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+						<div class="carousel-inner">
+							@for (var i = 0; i < Model.Product.Images.Count; i++)
+							{
+								<div class="carousel-item @(i == 0 ? "active" : "")">
+									<img src="@Model.Product.Images[i].Url" class="d-block w-100" alt="Product Image @(i + 1)">
+								</div>
+							}
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+				}
+				else
+				{
+					<p>No images available.</p>
+				} *@
+				</div>
+				
+			</div>
+
+			<form method="post" class="col-sm-6">
+				<div class="product-information">
+					
+						<div class="row">
+							<div>
+								<h2>@Model.Product.Name</h2>
+								<p><b>Condition:</b> New</p>
+								<p><b>Brand:</b> @Model.Brand.Name</p>
+								@if(Model.Product.Stock == 0)
+								{
+									<p><b>Hết Hàng</b></p>
+								}
+								else{
+									<p><b>Còn Hàng</b> @Model.Product.Stock</p>
+								}
+						
+								
+								<h2>Giá: @Model.Product.Price.ToString("#,##đ")</h2>
+
+										<label>
+											Quantity:
+											<div class="quantity-container">
+												<button type="button" class="quantity-button" onclick="decrementQuantity()">-</button>
+												<input name="quantity" id="quantity" class="quantity-input" min="1" value="1" />
+												<button type="button" class="quantity-button" onclick="incrementQuantity()">+</button>
+											</div>
+										</label>
+											
+										<button class="btn btn-fefault cart" type="submit" value="Add To Cart" class="col-7 transition btn btn-outline-success" style="height:38px;"
+												asp-route-productId="@Model.Product.Id" asp-controller="ShoppingCart" asp-action="AddToCart">
+											<i class="fa fa-shopping-cart"></i>
+											Thêm vào giỏ hàng
+										</button>
+
+								
+							</div>
+						</div>
+					
+				</div>
+			</form>
+		</div><!--/product-details-->
+
+		<div class="category-tab shop-details-tab">
+			<!--category-tab-->
+			<div class="col-sm-12">
+				<ul class="nav nav-tabs">
+					<li><a href="#details" data-toggle="tab">Details</a></li>
+					<li class="active"><a href="#reviews" data-toggle="tab">Reviews</a></li>
+					<li ><a href="#comments" data-toggle="tab">Comments</a></li>
+					
+				</ul>
+			</div>
+			<div class="tab-content">
+			<div class="tab-pane fade " id="details"><h4>@Model.Product.Description</h4></div>
+				<div class="tab-pane fade active in" id="reviews">
+					
+			
+					@if (Model.Product.Reviews.Any())
+					{
+						<div class="average-rating">
+							<span id="average-rating-stars"></span>
+							(@Model.AverageRating.ToString("0.0") sao)
+						</div>
+						@if (User.Identity.IsAuthenticated)
+						{
+							<h2>Đánh giá sản phẩm</h2>
+							<form asp-controller="Reviews" asp-action="AddReview" method="post">
+								<input type="hidden" name="productId" value="@Model.Product.Id" />
+								<input type="hidden" name="userId" value="@User.Identity.Name" />
+
+								<div class="form-group">
+									<label>Đánh giá:</label>
+									<div class="star-rating">
+										<input id="star5" type="radio" name="rating" value="5">
+										<label for="star5" title="5 sao">&#9733;</label>
+										<input id="star4" type="radio" name="rating" value="4">
+										<label for="star4" title="4 sao">&#9733;</label>
+										<input id="star3" type="radio" name="rating" value="3">
+										<label for="star3" title="3 sao">&#9733;</label>
+										<input id="star2" type="radio" name="rating" value="2">
+										<label for="star2" title="2 sao">&#9733;</label>
+										<input id="star1" type="radio" name="rating" value="1">
+										<label for="star1" title="1 sao">&#9733;</label>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label>Bình luận:</label>
+									<textarea style="height:50px" name="review" class="form-control" placeholder="Add a review" required></textarea>
+
+								</div>
+
+								<button class ="btn btn-fefault cart" type="submit" class="transition btn btn-outline-success">Gửi đánh giá</button>
+							</form>
+						}
+						else
+						{
+							<p>Vui lòng đăng nhập để đánh giá sản phẩm.</p>
+						}
+						<h2>Đánh giá</h2>
+						<div class="reviews">
+							@foreach (var review in Model.Product.Reviews)
+							{
+								<div class="review border-bottom">
+									<div class="user d-flex flex-row align-items-center">
+
+										<img src="~/imagesweb/avatar.png" alt="Avatar" class="avatar" width="30" class="user-img rounded-circle mr-2">
+										<p>@review.UserId</p>
+										<p style="margin-left: 10px">Ngày đánh giá: @review.ReviewDate.ToString("dd/MM/yyyy")</p>
+									
+									</div>
+									<div style="margin-left: 30px">
+										<p>
+											Đánh giá:
+											<span class="rating-stars" data-rating="@review.Rating"></span>
+											(@review.Rating sao)
+										</p>
+										<p>Nội dung: @review.Review</p>
+									</div>
+									
+									
+								</div>
+							}
+						</div>
+					}
+			
+					else
+					{
+						<p>Chưa có đánh giá nào cho sản phẩm này.</p>
+					}
+
+				<!-- Form đánh giá mới -->
+					
+				</div>
+				<div class="tab-pane fade" id="comments">
+					<div class="col-sm-12">
+					<h3>Comments</h3>
+					@if (User.Identity.IsAuthenticated)
+					{
+						<form asp-action="Create" asp-controller="Comment" method="post">
+							<input type="hidden" class="form-control" name="productId" value="@Model.Product.Id" />
+							<div class="mb-3 d-flex align-items-center">
+								<textarea style="height: 50px; resize: none;" name="content" class="form-control me-2" rows="1" placeholder="Add a comment" required></textarea>
+								<button class="btn btn-fefault cart btn btn-outline my-2 my-sm-0" type="submit">Submit</button>
+							</div>
+						</form>
+					}
+					else
+					{
+						<p>Vui lòng đăng nhập để bình luận.</p>
+					}
+
+					@if (Model.Comments.Any())
+					{
+						<div class="container">
+
+							<div class="row justify-content-center">
+
+							@foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null))
+							{
+
+									<div class="card p-3 mt-2">
+
+										<div class="d-flex justify-content-between align-items-center">
+
+											<div class="user d-flex flex-row align-items-center">
+
+												<img src="~/imagesweb/avatar.png" alt="Avatar" class="avatar" width="30" class="user-img rounded-circle mr-2">
+												<span><small class="font-weight-bold text-warning">@comment.UserName:</small> <small class="font-weight-bold">@comment.Content </small></span>
+
+											</div>
+										</div>
+
+
+										<div class="action d-flex justify-content-between mt-2 align-items-center">
+
+											<div class="reply px-4">
+												
+												
+												
+												@* <span class="dots"></span>
+												<small><a method="post" type="button" class="btn" onclick="showReplyForm('reply-form-1')">Reply</a></small> *@
+												<span class="dots"></span>
+												@if (User.Identity.IsAuthenticated && comment.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value)
+												{
+													<small><a asp-action="Delete" asp-controller="Comment" asp-route-Id="@comment.Id">Remove</a></small>
+												}
+												<span class="dots"></span>
+												<small>@comment.CommentDate.ToString("g")</small>
+
+											</div>
+
+											<div class="icons align-items-center">
+												<i class="fa fa-check-circle-o check-icon text-primary"></i>
+
+											</div>
+
+										</div>
+										@*Reply*@
+										<div style="margin-left: 100px">
+										@foreach (var reply in comment.Replies)
+										{
+											<div class="d-flex justify-content-between align-items-center">
+
+												<div class="user d-flex flex-row align-items-center">
+
+													<img src="~/imagesweb/avatar.png" alt="Avatar" class="avatar" width="30" class="user-img rounded-circle mr-2">
+													<span><small class="font-weight-bold text-warning">@reply.UserName:</small><small class="font-weight-bold">@reply.Content </small></span>
+
+												</div>
+											</div>
+											<div class="action d-flex justify-content-between mt-2 align-items-center">
+
+												<div class="reply px-4">
+													@* <span class="dots"></span>
+													<small><a method="post" type="button" class="btn" onclick="showReplyForm('reply-form-1')">Reply</a></small> *@
+													<span class="dots"></span>
+													@if (User.Identity.IsAuthenticated && reply.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value)
+													{
+														<small><a asp-action="Delete" asp-controller="Comment" asp-route-Id="@reply.Id">Remove</a></small>
+													}
+													<span class="dots"></span>
+													<small>@reply.CommentDate.ToString("g")</small>
+
+												</div>
+
+												<div class="icons align-items-center">
+													<i class="fa fa-check-circle-o check-icon text-primary"></i>
+
+												</div>
+
+											</div>
+										}
+										</div>
+										@if (User.Identity.IsAuthenticated)
+										{
+											<div id="reply-form-1" class="reply-form">
+												<form  asp-controller="Comment" asp-action="Create" method="post">
+													<input type="hidden" name="productId" value="@Model.Product.Id" />
+													<input type="hidden" name="parentCommentId" value="@comment.Id" />
+													<div class="mb-3 d-flex align-items-center">
+														<textarea style="height:50px" id="reply" name="content" class="form-control" placeholder="Add a reply" rows="1" required></textarea>
+														<input type="hidden" name="commentId" value="1" />
+														
+													</div>
+													<button class="btn btn-fefault cart my-2 my-sm-0 btn btn-outline" type="submit">Reply</button>
+													
+												</form>
+											</div>
+
+
+										}
+										
+									</div>
+							}
+							</div>
+
+
+
+						</div>
+					}
+					else
+					{
+						<p>Không có bình luận nào.</p>
+					}
+
+					</div>
+				</div>
+
+			</div>
+		</div><!--/category-tab-->
+	<script>
+		function showReplyForm(formId) {
+			var form = document.getElementById(formId);
+			if (form.style.display === "none" || form.style.display === "") {
+				form.style.display = "block";
+			} else {
+				form.style.display = "none";
+			}
+		}
+		
+	</script>
+
+	
+	@* 	<div class="recommended_items">
+			<!--recommended_items-->
+			<h2 class="title text-center">recommended items</h2>
+
+			<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="images/home/recommend1.jpg" alt="" />
+										<h2>$56</h2>
+										<p>Easy Polo Black Edition</p>
+										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="images/home/recommend2.jpg" alt="" />
+										<h2>$56</h2>
+										<p>Easy Polo Black Edition</p>
+										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="images/home/recommend3.jpg" alt="" />
+										<h2>$56</h2>
+										<p>Easy Polo Black Edition</p>
+										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="images/home/recommend1.jpg" alt="" />
+										<h2>$56</h2>
+										<p>Easy Polo Black Edition</p>
+										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="images/home/recommend2.jpg" alt="" />
+										<h2>$56</h2>
+										<p>Easy Polo Black Edition</p>
+										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="images/home/recommend3.jpg" alt="" />
+										<h2>$56</h2>
+										<p>Easy Polo Black Edition</p>
+										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+					<i class="fa fa-angle-left"></i>
+				</a>
+				<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+					<i class="fa fa-angle-right"></i>
+				</a>
+			</div>
+		</div><!--/recommended_items--> *@
+
+	</div>
+</div>
+
+
+
+<script>
+	function incrementQuantity() {
+		var quantityInput = document.getElementById('quantity');
+		var currentValue = parseInt(quantityInput.value);
+		quantityInput.value = currentValue + 1;
+	}
+
+	function decrementQuantity() {
+		var quantityInput = document.getElementById('quantity');
+		var currentValue = parseInt(quantityInput.value);
+		if (currentValue > 1) {
+			quantityInput.value = currentValue - 1;
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		// Hiển thị đánh giá trung bình dưới dạng ngôi sao
+		const averageRating = parseFloat('@Model.AverageRating');
+		const averageRatingContainer = document.getElementById("average-rating-stars");
+		averageRatingContainer.innerHTML = getStarRatingHTML(averageRating);
+
+		// Hiển thị các đánh giá chi tiết dưới dạng ngôi sao
+		document.querySelectorAll(".rating-stars").forEach(function (starContainer) {
+			const rating = parseFloat(starContainer.getAttribute("data-rating"));
+			starContainer.innerHTML = getStarRatingHTML(rating);
+		});
+	});
+
+	function getStarRatingHTML(rating) {
+		const fullStar = '<i class="fa fa-star"></i>';
+		const halfStar = '<i class="fa fa-star-half-alt"></i>';
+		const emptyStar = '<i class="fa fa-star-o"></i>';
+
+		let starHTML = '';
+		let integerPart = Math.floor(rating);
+		let fractionalPart = rating - integerPart;
+
+		for (let i = 1; i <= 5; i++) {
+			if (i <= integerPart) {
+				starHTML += fullStar;
+			} else if (i === integerPart + 1 && fractionalPart >= 0.5) {
+				starHTML += halfStar;
+			} else {
+				starHTML += emptyStar;
+			}
+		}
+
+		return starHTML;
+	}
+</script>
+
+
+
+<style>
+
+	.reply-form {
+		display: white;
+		margin-top: 10px;
+	}
+</style>
+
+<style>
+	.star-rating {
+		direction: rtl;
+		display: inline-block;
+		font-size: 0;
+	}
+
+		.star-rating input[type="radio"] {
+			display: none;
+		}
+
+		.star-rating label {
+			font-size: 2rem;
+			color: lightgray;
+			cursor: pointer;
+		}
+
+		.star-rating input[type="radio"]:checked ~ label {
+			color: #fb9372;
+		}
+
+		.star-rating label:hover,
+		.star-rating label:hover ~ label {
+			color: #fb9372;
+		}
+
+	.fa-star, .fa-star-half-alt, .fa-star-o {
+		color: #fb9372;
+	}
+
+	.rating-stars, .average-rating {
+		display: inline-block;
+		font-size: 25px;
+	}
+<style>
+	.avatar {
+		vertical-align: middle;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+	}
+
+
+
+	.card {
+		border: none;
+		box-shadow: 5px 6px 6px 2px #e9ecef;
+		border-radius: 4px;
+	}
+
+
+	.dots {
+		height: 4px;
+		width: 4px;
+		margin-bottom: 2px;
+		background-color: #bbb;
+		border-radius: 50%;
+		display: inline-block;
+	}
+
+	.badge {
+		padding: 7px;
+		padding-right: 9px;
+		padding-left: 16px;
+		box-shadow: 5px 6px 6px 2px #e9ecef;
+	}
+
+	.user-img {
+		margin-top: 4px;
+	}
+
+	.check-icon {
+		font-size: 17px;
+		color: #c3bfbf;
+		top: 1px;
+		position: relative;
+		margin-left: 3px;
+	}
+
+	.form-check-input {
+		margin-top: 6px;
+		margin-left: -24px !important;
+		cursor: pointer;
+	}
+
+
+		.form-check-input:focus {
+			box-shadow: none;
+		}
+
+
+	.icons i {
+		margin-left: 8px;
+	}
+
+	.reply {
+		margin-left: 12px;
+	}
+
+		.reply small {
+			color: #b7b4b4;
+		}
+
+
+			
+</style>

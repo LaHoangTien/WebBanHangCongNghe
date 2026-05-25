@@ -1,0 +1,121 @@
+﻿@model ShoppingCart
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="breadcrumbs">
+        <ol class="breadcrumb">
+            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="active">Shopping Cart</li>
+        </ol>
+    </div>
+</div>
+<section >
+    <div class="container">
+        <div class="row" style="background-color: #fdccbc; padding: 20px; border-radius: 8px;">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-sm-12 product-card">
+                    <div class="row align-items-center" style="height:200px;">
+                        <div class=" col-md-2">
+                            <img src="@item.Product.ImageUrl" alt="" style="max-height:200px"
+                                 class="img-fluid">
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center">
+                            <div>
+                                <p class="small text-muted mb-4 pb-2">Tên sản phẩm</p>
+                                <p title="@item.Product.Name" class="lead fw-normal mb-0"><a asp-controller="Home" style="color:black" asp-action="Detail" asp-route-id="@item.ProductId">@item.Name</a></p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <div>
+                                <p class="small text-muted mb-4 pb-2">Gia</p>
+                                <p class="lead fw-normal mb-0">@item.Price.ToString("#,##0đ")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <div class="cart_quantity_button">
+                                <p class="small text-muted mb-4 pb-2">Số lượng</p>
+                                <a type="button" class="quantity-button" asp-action="MinusCart" asp-controller="ShoppingCart" asp-route-productId="@item.Product.Id">-</a>
+                                <input type="text" class="cart_quantity_input" disabled="disabled" value="@item.Quantity" autocomplete="off" size="2">
+                                <a type="button" class="quantity-button" asp-action="PlusCart" asp-controller="ShoppingCart" asp-route-productId="@item.Product.Id">+</a>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <div>
+                                <p class="small text-muted mb-4 pb-2">Thành tiền</p>
+                                <p class="lead fw-normal mb-0">@item.TotalPrice.ToString("#,##0đ")</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            <a class="text-danger" asp-action="RemoveItem" asp-route-id="@item.ProductId"><i class="fa fa-times"></i></a>
+                        </div>
+                    </div>
+                </div>
+            }    
+            <div class="card mb-5">
+                <div class="card-body p-4">
+
+                    <div class="float-end">
+                        <p class="mb-0 me-5 d-flex align-items-center">
+                            <span class="lead fw-normal">Tổng hóa đơn: </span> <span class="lead fw-normal">@Model.Items.Sum(p => p.TotalPrice).ToString("#,##0đ")</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a asp-controller="Home" asp-action="Index" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-lg ">Tiếp tục mua sắm</a>
+                <a asp-action="Checkout" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-lg ">Đặt hàng</a>
+            </div>
+        </div>
+    </div>  
+</section>
+<div class="container">
+    <div class="breadcrumbs">
+        <ol class="breadcrumb">
+            <li></li>
+            <li class="active"></li>
+        </ol>
+    </div>
+</div>
+<style>
+    .lead {
+        text-decoration: none;
+        display: inline-block;
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-card {
+        background-color: white;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+
+        .product-card img {
+            max-height: 150px;
+        }
+
+        .product-card p {
+            margin: 0;
+        }
+
+        .product-card a {
+            color: black;
+            text-decoration: none;
+        }
+
+            .product-card a:hover {
+                color: #fb9372;
+            }
+</style>

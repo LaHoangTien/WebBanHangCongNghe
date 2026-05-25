@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Wishlist>
+
+@{
+    ViewData["Title"] = "Index"; 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.Currentpage;
+    }
+}
+<div class="container">
+<div class="breadcrumbs">
+    <ol class="breadcrumb">
+        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="active">Wishlist</li>
+    </ol>
+</div>
+</div>
+
+<section >
+        <div class="container">
+        <div class="row" style="background-color: #fdccbc; padding: 20px; border-radius: 8px;">
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-12 product-card">
+                        <div class="row align-items-center" style="height:200px;">
+                            <div class="col-sm-2 text-center">
+                                <img src="@item.Product.ImageUrl" alt="Image of @item.Product.Name" class="img-fluid">
+                            </div>
+                            <div class="col-md-5">
+                                <p class="small text-muted">Tên sản phẩm</p>
+                            <p title="@item.Product.Name" class="lead fw-normal mb-0">
+                                <a asp-controller="Home" asp-action="Detail" asp-route-id="@item.ProductId">@item.Product.Name</a>
+                            </p>
+                            </div>
+                       
+                            <div class="col-sm-3">
+                                <p class="small text-muted">Giá</p>
+                                <p class="lead fw-normal mb-0">@item.Product.Price.ToString("#,##0đ")</p>
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                <a class="text-danger" asp-action="RemoveFromWishlist" asp-route-id="@item.Id">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+<section class="pager">
+    <div class="container">
+        @if (pager.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-center">
+                @* First and Previous Buttons *@
+                <li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-controller="Wishlist" asp-action="Index" asp-route-pg="1" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">First</a>
+                </li>
+                <li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-controller="Wishlist" asp-action="Index" asp-route-pg="@(pager.Currentpage > 1 ? pager.Currentpage - 1 : 1)" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">Previous</a>
+                </li>
+
+                @* Page Numbers *@
+                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                {
+                    @if (pge > 0) // Chỉ hiển thị các số trang dương
+                    {
+                        <li class="page-item @(pge == pager.Currentpage ? "active" : "")">
+                            <a class="page-link" asp-controller="Wishlist" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                        </li>
+                    }
+                }
+
+                @* Next and Last Buttons *@
+                <li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-controller="Wishlist" asp-action="Index" asp-route-pg="@(pager.Currentpage < pager.TotalPages ? pager.Currentpage + 1 : pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Next</a>
+                </li>
+                <li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-controller="Wishlist" asp-action="Index" asp-route-pg="@(pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Last</a>
+                </li>
+            </ul>
+
+            @* Page Info *@
+            <p class="text-center">
+                Page @pager.Currentpage of @pager.TotalPages
+            </p>
+        }
+    </div>
+</section>
+<style>
+    .lead {
+        text-decoration: none;
+        display: inline-block;
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .product-card {
+        background-color: white;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+
+        .product-card img {
+            max-height: 150px;
+        }
+
+        .product-card p {
+            margin: 0;
+        }
+
+        .product-card a {
+            color: black;
+            text-decoration: none;
+        }
+
+            .product-card a:hover {
+                color: #fb9372;
+            }
+</style>

@@ -1,0 +1,134 @@
+﻿@model IEnumerable<WebBanHang.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.Currentpage;
+    }
+}
+<div class="search_box">
+    <form asp-action="SearchOrder" asp-controller="OrderManager" method="get" class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" style="width:250px;background-image: url(../images/home/searchicon.png);background-repeat: no-repeat;background-position: 225px;" type="search" name="searchString" value="@ViewBag.SearchString" placeholder="Search" aria-label="Search">
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Revenue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentExpression)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.Revenue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShippingAddress)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.PaymentExpression)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+
+            <td class="btn-group" role="group" aria-label="Basic example">
+                    @* <a asp-action="EditOrder" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Edit</a> *@
+                    <a asp-action="Details" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="DeleteOrder" class="btn btn-primary btn-sm" onclick="return confirm('Are you sure you want to delete this order?');" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<section class="pager">
+    <div class="container">
+        @if (pager.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-center">
+                @* First and Previous Buttons *@
+                <li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-controller="OrderManager" asp-action="Index" asp-route-pg="1" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">First</a>
+                </li>
+                <li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-controller="OrderManager" asp-action="Index" asp-route-pg="@(pager.Currentpage > 1 ? pager.Currentpage - 1 : 1)" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">Previous</a>
+                </li>
+
+                @* Page Numbers *@
+                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                {
+                    @if (pge > 0) // Chỉ hiển thị các số trang dương
+                    {
+                        <li class="page-item @(pge == pager.Currentpage ? "active" : "")">
+                            <a class="page-link" asp-controller="OrderManager" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                        </li>
+                    }
+                }
+
+                @* Next and Last Buttons *@
+                <li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-controller="OrderManager" asp-action="Index" asp-route-pg="@(pager.Currentpage < pager.TotalPages ? pager.Currentpage + 1 : pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Next</a>
+                </li>
+                <li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-controller="OrderManager" asp-action="Index" asp-route-pg="@(pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Last</a>
+                </li>
+            </ul>
+
+            @* Page Info *@
+            <p class="text-center">
+                Page @pager.Currentpage of @pager.TotalPages
+            </p>
+        }
+    </div>
+</section>

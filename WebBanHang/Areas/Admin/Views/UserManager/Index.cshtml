@@ -1,0 +1,161 @@
+﻿@model IEnumerable<WebBanHang.Areas.Admin.Models.UserViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.Currentpage;
+    }
+}
+
+
+<h1>Users</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-secondary">Name</th>
+            <th class="text-secondary">Email</th>
+            <th class="text-secondary">PhoneNumber</th>
+            <th class="text-secondary">Address</th>
+            <th class="text-secondary">Roles</th> <!-- Thêm cột Roles -->
+            <th class="text-secondary">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-secondary">@item.FullName</td>
+                <td class="text-secondary">@item.Email</td>
+                <td class="text-secondary">@item.PhoneNumber</td>
+                <td class="text-secondary">@item.Address</td>
+                <td class="text-secondary">
+                    @foreach (var role in item.Roles)
+                    {
+                        <span class="text-secondary" class="badge badge-primary">@role</span>
+                    }
+                </td> <!-- Hiển thị các role -->
+                <td class="text-secondary">
+                    <a asp-controller="UserManager" asp-action="EditUserRole" asp-route-userId="@item.Id">Edit Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<section class="pager">
+    <div class="container">
+        @if (pager.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-center">
+                @* First and Previous Buttons *@
+                <li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-controller="UserManager" asp-action="Index" asp-route-pg="1" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">First</a>
+                </li>
+                <li class="page-item @(pager.Currentpage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-controller="UserManager" asp-action="Index" asp-route-pg="@(pager.Currentpage > 1 ? pager.Currentpage - 1 : 1)" tabindex="-1" aria-disabled="@(pager.Currentpage == 1)">Previous</a>
+                </li>
+
+                @* Page Numbers *@
+                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                {
+                    @if (pge > 0) // Chỉ hiển thị các số trang dương
+                    {
+                        <li class="page-item @(pge == pager.Currentpage ? "active" : "")">
+                            <a class="page-link" asp-controller="UserManager" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                        </li>
+                    }
+                }
+
+                @* Next and Last Buttons *@
+                <li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-controller="UserManager" asp-action="Index" asp-route-pg="@(pager.Currentpage < pager.TotalPages ? pager.Currentpage + 1 : pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Next</a>
+                </li>
+                <li class="page-item @(pager.Currentpage == pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-controller="UserManager" asp-action="Index" asp-route-pg="@(pager.TotalPages)" tabindex="-1" aria-disabled="@(pager.Currentpage == pager.TotalPages)">Last</a>
+                </li>
+            </ul>
+
+            @* Page Info *@
+            <p class="text-center">
+                Page @pager.Currentpage of @pager.TotalPages
+            </p>
+        }
+    </div>
+</section>
+<!-- Modal -->
+@* <div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRoleModalLabel">Edit User Roles</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editRoleForm">
+                    <input type="hidden" id="UserId" name="UserId" />
+                    <div class="form-group">
+                        <label for="SelectedRoles">Roles</label>
+                        <select id="SelectedRoles" name="SelectedRoles" multiple class="form-control">
+                            <!-- Roles will be loaded dynamically -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#editRoleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var userId = button.data('userid'); // Extract info from data-* attributes
+            var modal = $(this);
+
+            // Load user roles
+            $.ajax({
+                url: '@Url.Action("GetUserRoles", "UserManager")',
+                type: 'GET',
+                data: { userId: userId },
+                success: function (data) {
+                    $('#UserId').val(data.userId);
+                    var rolesSelect = $('#SelectedRoles');
+                    rolesSelect.empty();
+                    $.each(data.allRoles, function (i, role) {
+                        rolesSelect.append($('<option>', {
+                            value: role,
+                            text: role,
+                            selected: $.inArray(role, data.userRoles) !== -1
+                        }));
+                    });
+                }
+            });
+        });
+
+        $('#editRoleForm').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '@Url.Action("EditUserRole", "UserManager")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function () {
+                    $('#editRoleModal').modal('hide');
+                    // Optionally, update the UI or show a success message
+                },
+                error: function () {
+                    // Handle error
+                }
+            });
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> *@

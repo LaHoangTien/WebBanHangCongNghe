@@ -1,0 +1,33 @@
+﻿@model IEnumerable<WebBanHang.Models.Brand>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Hãng</h1>
+<div class="nav justify-content-end">
+    <a asp-controller="BrandsControllers" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square"></i>Create new</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-secandary">Name</th>
+            <th class="text-secandary">ID</th>
+            <th class="text-secandary">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-secandary">@item.Name</td>
+                <td class="text-secandary">@item.Id</td>
+                <td>
+                    <a asp-action="Detail" asp-route-id="@item.Id"><i class="bi bi-view-list"></i></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3-fill"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

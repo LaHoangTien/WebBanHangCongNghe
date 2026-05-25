@@ -1,0 +1,28 @@
+﻿@model WebBanHang.Models.Brand
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Xóa</h1>
+
+<h3 class="text-secandary">Bạn có chắc là muốn xóa mục này không ?</h3>
+<div class="text-secandary">
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id"/>
+        <input type="submit" value="Delete" class="btn btn-danger"/> 
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

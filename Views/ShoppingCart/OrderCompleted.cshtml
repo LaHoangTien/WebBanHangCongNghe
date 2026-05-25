@@ -1,0 +1,25 @@
+﻿@model int
+@{
+    ViewData["Title"] = "OrderCompleted";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            
+                <div>
+                <div class="col-sm-12 empty-cart-cls text-center">
+                        <img src="https://file.hstatic.net/200000472237/article/ung-dung-ship-hang_fed864d839d04fe1b035df0d991a8d0b.png" width="300" height="300" class="img-fluid mb-4 mr-3">
+                        <h2 style="color:#fb9372"><strong>Đặt hàng thành công</strong></h2>
+                        <h4 style="color:#fb9372">Chúng tôi đã nhận được thông tin mua hàng !! <br />mã đơn hàng của bạn là @Model.</h4>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Tiếp tục mua sắm</a>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+</div>
